@@ -35,6 +35,7 @@ class RecipesState extends State<RecipesList> {
 
   @override
   Widget build(BuildContext context) {
+    final bool alreadySaved = false;
     return Scaffold (
       appBar: AppBar(
         title: Text('Recipe Magazine'),
@@ -58,11 +59,13 @@ class RecipesState extends State<RecipesList> {
                     return new Column(
                       children: <Widget>[
                         new ListTile(
+                          leading: Icon(Icons.image),
                           title: new Text(
                             snapshot.data[index],
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                          ),
+                          trailing: Icon(   // Add the lines from here...
+                            alreadySaved ? Icons.favorite : Icons.favorite_border,
+                            color: alreadySaved ? Colors.red : null,
                           ),
                         ),
                       ]
