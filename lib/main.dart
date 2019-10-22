@@ -5,6 +5,7 @@ import 'package:json_api/json_api.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,31 +18,26 @@ class MyApp extends StatelessWidget {
 }
 
 class RecipesState extends State<RecipesList> {
+  final Set<String> _saved = Set<String>();
 
-  Future<List> recipeResults() async {
+  Future<Map> recipeResults() async {
     // Get recipes from the Contenta CMS API.
-    final resultsList = new List();
     final httpClient = Client();
     final jsonApiClient = JsonApiClient(httpClient);
     final companiesUri = Uri.parse('https://dev-contentacms.pantheonsite.io/api/recipes');
     final response = await jsonApiClient.fetchCollection(companiesUri);
     httpClient.close();
 
-    // Get and return a list of Recipe titles.
-    final resource = response.data.unwrap().asMap();
-    resource.forEach((k, v) => resultsList.add(resource[k].attributes["title"]));
-    return resultsList;
+    final results = response.data.unwrap().asMap();
+    return results;
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool alreadySaved = false;
+
     return Scaffold (
       appBar: AppBar(
         title: Text('Recipe Magazine'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: null),
-        ],
       ),
       body: Container(
         width: double.infinity,
@@ -56,17 +52,28 @@ class RecipesState extends State<RecipesList> {
                   padding: const EdgeInsets.all(16),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext ctxt, int index) {
+                    final bool alreadySaved = _saved.contains(snapshot.data[index].attributes['title']); // Add 9 lines from here...
+
                     return new Column(
                       children: <Widget>[
                         new ListTile(
                           leading: Icon(Icons.image),
                           title: new Text(
-                            snapshot.data[index],
+                            snapshot.data[index].attributes['title'],
                           ),
                           trailing: Icon(   // Add the lines from here...
                             alreadySaved ? Icons.favorite : Icons.favorite_border,
                             color: alreadySaved ? Colors.red : null,
                           ),
+                          onTap: () {
+                            setState(() {
+                              if (alreadySaved) {
+                                _saved.remove(snapshot.data[index].attributes['title']);
+                              } else {
+                                _saved.add(snapshot.data[index].attributes['title']);
+                              }
+                            });
+                          },
                         ),
                       ]
                     );
