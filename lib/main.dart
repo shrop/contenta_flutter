@@ -52,7 +52,7 @@ class RecipesState extends State<RecipesList> {
                   padding: const EdgeInsets.all(16),
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    final bool alreadySaved = _saved.contains(snapshot.data[index].attributes['title']); // Add 9 lines from here...
+                    final bool alreadySaved = _saved.contains(snapshot.data[index].id); // Add 9 lines from here...
 
                     return new Column(
                       children: <Widget>[
@@ -68,9 +68,9 @@ class RecipesState extends State<RecipesList> {
                           onTap: () {
                             setState(() {
                               if (alreadySaved) {
-                                _saved.remove(snapshot.data[index].attributes['title']);
+                                _saved.remove(snapshot.data[index].id);
                               } else {
-                                _saved.add(snapshot.data[index].attributes['title']);
+                                _saved.add(snapshot.data[index].id);
                               }
                             });
                           },
