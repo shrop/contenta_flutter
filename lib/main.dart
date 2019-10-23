@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:json_api/json_api.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,6 +33,19 @@ class RecipesState extends State<RecipesList> {
     return results;
   }
 
+  Future<List> getFavs() async {
+    final favs = new List();
+    await Firestore.instance
+      .collection('recipes')
+      .getDocuments()
+      .then((QuerySnapshot docs) {
+        if (docs.documents.isNotEmpty) {
+          docs.documents.forEach((doc) => favs.add(doc.documentID));
+        }
+    });
+    return favs;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -43,23 +57,28 @@ class RecipesState extends State<RecipesList> {
         width: double.infinity,
         height: double.infinity,
         child: FutureBuilder(
-          future: recipeResults(),
+          future: Future.wait([
+            recipeResults(),
+            getFavs(),
+          ]),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               // List Recipe titles.
               return new ListView.builder
                 (
                   padding: const EdgeInsets.all(16),
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data[0].length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    final bool alreadySaved = _saved.contains(snapshot.data[index].id); // Add 9 lines from here...
+                    //final bool alreadySaved = _saved.contains(snapshot.data[index].id); // Add 9 lines from here...
+
+                    final bool alreadySaved = snapshot.data[1].contains(snapshot.data[0][index].id);
 
                     return new Column(
                       children: <Widget>[
                         new ListTile(
                           leading: Icon(Icons.image),
                           title: new Text(
-                            snapshot.data[index].attributes['title'],
+                            snapshot.data[0][index].attributes['title'],
                           ),
                           trailing: Icon(   // Add the lines from here...
                             alreadySaved ? Icons.favorite : Icons.favorite_border,
@@ -67,10 +86,14 @@ class RecipesState extends State<RecipesList> {
                           ),
                           onTap: () {
                             setState(() {
-                              if (alreadySaved) {
-                                _saved.remove(snapshot.data[index].id);
+                            if (alreadySaved) {
+                                _saved.remove(snapshot.data[0][index].id);
+                                Firestore.instance.collection('recipes').document(snapshot.data[0][index].id)
+                                  .delete();
                               } else {
-                                _saved.add(snapshot.data[index].id);
+                                _saved.add(snapshot.data[0][index].id);
+                                Firestore.instance.collection('recipes').document(snapshot.data[0][index].id)
+                                  .setData({ 'id': snapshot.data[0][index].id });
                               }
                             });
                           },
