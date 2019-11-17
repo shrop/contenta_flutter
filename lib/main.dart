@@ -18,6 +18,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class RecipesList extends StatefulWidget {
+  @override
+  RecipesState createState() => RecipesState();
+}
+
 class RecipesState extends State<RecipesList> {
   final Set<String> _saved = Set<String>();
 
@@ -34,6 +39,7 @@ class RecipesState extends State<RecipesList> {
   }
 
   Future<List> getFavs() async {
+    // Get initial favorites from Firestore.
     final favs = new List();
     await Firestore.instance
       .collection('recipes')
@@ -54,8 +60,6 @@ class RecipesState extends State<RecipesList> {
         title: Text('Recipe Magazine'),
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         child: FutureBuilder(
           future: Future.wait([
             recipeResults(),
@@ -113,9 +117,4 @@ class RecipesState extends State<RecipesList> {
       ),
     );
   }
-}
-
-class RecipesList extends StatefulWidget {
-  @override
-  RecipesState createState() => RecipesState();
 }
