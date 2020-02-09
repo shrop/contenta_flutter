@@ -7,6 +7,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Umami Recipes'),
       ),
+      body: Text(
+        "Hello Recipes!"
+      ),
     );
   }
 }
