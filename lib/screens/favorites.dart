@@ -7,9 +7,7 @@ class FavoritesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Favorites'),
       ),
-      body: Text(
-        "Hello Favorites!"
-      ),
+      body: Text("Hello Favorites!"),
     );
   }
 }

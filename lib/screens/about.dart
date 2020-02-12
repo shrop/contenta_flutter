@@ -7,9 +7,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('About Umami'),
       ),
-      body: Text(
-        "Hello About Info!"
-      ),
+      body: Text("Hello About Info!"),
     );
   }
 }

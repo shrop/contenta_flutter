@@ -6,8 +6,7 @@ import 'package:contenta_flutter/screens/about.dart';
 
 class BottomNav extends StatefulWidget {
   @override
-  _BottomNavState createState() =>
-      _BottomNavState();
+  _BottomNavState createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
@@ -24,9 +23,9 @@ class _BottomNavState extends State<BottomNav> {
       body: currentTab[provider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: provider.currentIndex,
-          onTap: (index) {
-            provider.currentIndex = index;
-          },
+        onTap: (index) {
+          provider.currentIndex = index;
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
