@@ -7,7 +7,22 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Umami Recipes'),
       ),
-      body: Text("Hello Recipes!"),
+      body: ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+          color: Colors.black,
+        ),
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Image.network(
+              'https://dev-contentacms.pantheonsite.io/sites/default/files/716259-pxhere.jpg',
+            ),
+            title: Text('Blue cheese and walnut pizza'),
+            subtitle: Text('Snack\nDifficulty: Easy Time: 14 mins'),
+            isThreeLine: true,
+          );
+        },
+      ),
     );
   }
 }
