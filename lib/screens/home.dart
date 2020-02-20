@@ -1,3 +1,4 @@
+import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,6 +21,12 @@ class HomePage extends StatelessWidget {
             title: Text('Blue cheese and walnut pizza'),
             subtitle: Text('Snack\nDifficulty: Easy Time: 14 mins'),
             isThreeLine: true,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecipePage()),
+              );
+            },
           );
         },
       ),
