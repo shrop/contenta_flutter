@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:json_api/json_api.dart';
+import 'package:json_api/client.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
@@ -56,7 +56,7 @@ class RecipesState extends State<RecipesList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: Size.fromHeight(75.0),
         child: AppBar(
           title: Image.asset(
             'assets/images/logo.png',
