@@ -5,7 +5,13 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: Text(
+          'About Umami',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Color(0xFF767775),
       ),
       body: ListView.separated(
         separatorBuilder: (context, index) => Divider(
