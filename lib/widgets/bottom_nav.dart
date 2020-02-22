@@ -22,6 +22,9 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       body: currentTab[provider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFF5F635D),
+        selectedItemColor: Color(0xFFED652C),
+        unselectedItemColor: Colors.white,
         currentIndex: provider.currentIndex,
         onTap: (index) {
           provider.currentIndex = index;

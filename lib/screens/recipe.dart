@@ -5,19 +5,27 @@ class RecipePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipe Detail'),
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        title: Text(
+          'Recipe Detail',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Color(0xFF767775),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(30.0),
               child: Image.network(
                 'https://dev-contentacms.pantheonsite.io/sites/default/files/716259-pxhere.jpg',
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+              margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
               alignment: Alignment.topLeft,
               child: Row(
                 children: [
