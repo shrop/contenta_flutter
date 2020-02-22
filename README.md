@@ -1,16 +1,22 @@
-# contenta_flutter
+# Contenta Flutter
 
-A new Flutter project.
+Contenta Flutter is an example consumer for the [Contenta CMS](https://www.contentacms.org/). Contenta CMS is an API-first Drupal distribution. Contenta Flutter provides a learning opportunity for technologies and concepts, including decoupled Drupal 8, Google Firebase Firestore, and Flutter.
 
-## Getting Started
+The Flutter app is a decoupled Drupal frontend for the Umami Food Magazine demo content that is an experiemntal Drupal 8 install profile.
 
-This project is a starting point for a Flutter application.
+>Umami is a fictional food magazine that has been created to demonstrate how you might build a Drupal site using functionality provided 'out of the box'.
+For more information visit https://www.drupal.org/docs/8/umami-drupal-8-demonstration-installation-profile.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Technical Architecture
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* The Flutter app reads recipe data from the [Contenta CMS JSON API endpoint](https://dev-contentacms.pantheonsite.io/api).
+* User interactions such as marking recipes as favorites are saved to a Google Firebase Firestore.
+
+## Installation
+
+TBD
+
+## Roadmap
+
+TBD
