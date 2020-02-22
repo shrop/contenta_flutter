@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xFF767775),
+        backgroundColor: Colors.grey[400],
       ),
       body: ListView.separated(
         separatorBuilder: (context, index) => Divider(
