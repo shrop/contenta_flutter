@@ -14,7 +14,7 @@ class RecipePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Color(0xFF767775),
+        backgroundColor: Colors.grey[400],
       ),
       body: SingleChildScrollView(
         child: Column(
