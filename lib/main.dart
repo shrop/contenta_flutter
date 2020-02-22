@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.yellow[400],
+        primaryColor: Colors.grey[400],
       ),
       home: RecipesList(),
     );
@@ -55,8 +55,14 @@ class RecipesState extends State<RecipesList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Recipe Magazine'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: Image.asset(
+            'assets/images/logo.png',
+            width: 175,
+          ),
+        ),
       ),
       body: Container(
         child: FutureBuilder(
