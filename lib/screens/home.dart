@@ -3,42 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:contenta_flutter/services/recipes.dart';
 
 class HomePage extends StatelessWidget {
-  final recipes = recipeResults();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'About Umami',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.grey[400],
-      ),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          color: Colors.black,
-        ),
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Image.network(
-              'https://dev-contentacms.pantheonsite.io/sites/default/files/716259-pxhere.jpg',
+        appBar: AppBar(
+          title: Text(
+            'Umami Recipes',
+            style: TextStyle(
+              color: Colors.white,
             ),
-            title: Text('Blue cheese and walnut pizza'),
-            subtitle: Text('Snack\nDifficulty: Easy Time: 14 mins'),
-            isThreeLine: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RecipePage()),
-              );
-            },
-          );
-        },
-      ),
-    );
+          ),
+          backgroundColor: Colors.grey[400],
+        ),
+        body: Container(
+          child: FutureBuilder(
+              future: Future.wait([
+                RecipeService().fetchRecipes(),
+              ]),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: snapshot.data[0].length,
+                      itemBuilder: (BuildContext ctxt, int index) {
+                        return Column(children: <Widget>[
+                          ListTile(
+                            leading: Icon(Icons.image),
+                            title: Text(
+                              snapshot.data[0][index].attributes['title'],
+                            ),
+                          )
+                        ]);
+                      });
+                } else {
+                  // Proivde a spinner while we wait on the Contenta CMS API.
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
+        ));
   }
 }
