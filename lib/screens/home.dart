@@ -1,7 +1,10 @@
 import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:contenta_flutter/services/recipes.dart';
 
 class HomePage extends StatelessWidget {
+  final recipes = recipeResults();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
