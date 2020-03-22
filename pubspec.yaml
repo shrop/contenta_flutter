@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  json_api: ^2.0.3
+  json_api: ^3.2.3
   cloud_firestore: 0.12.9+5
   provider: ^4.0.3
 
