@@ -32,6 +32,13 @@ class HomePage extends StatelessWidget {
                             title: Text(
                               snapshot.data[0][index].attributes['title'],
                             ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RecipePage()),
+                              );
+                            },
                           )
                         ]);
                       });
