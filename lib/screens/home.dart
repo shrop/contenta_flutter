@@ -1,6 +1,7 @@
 import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:contenta_flutter/services/recipes.dart';
+import 'package:recase/recase.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -31,17 +32,17 @@ class HomePage extends StatelessWidget {
                             leading: Icon(Icons.image),
                             title: Text(
                               snapshot.data[0][index].attributes['title'] ??
-                                  'N/A',
+                                  'Title not available.',
                             ),
                             subtitle: Text('DIfficulty: ' +
-                                ((snapshot.data[0][index]
-                                        .attributes['difficulty'] ??
-                                    'N/A')) +
+                                ((ReCase(snapshot.data[0][index]
+                                            .attributes['difficulty'] ??
+                                        'None'))
+                                    .titleCase) +
                                 ' | Time: ' +
-                                ((snapshot
-                                        .data[0][index].attributes['totalTime']
-                                        .toString() ??
-                                    'N/A'))),
+                                snapshot.data[0][index].attributes['totalTime']
+                                    .toString() +
+                                ' min'),
                             onTap: () {
                               Navigator.push(
                                 context,
