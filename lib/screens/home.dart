@@ -30,8 +30,18 @@ class HomePage extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.image),
                             title: Text(
-                              snapshot.data[0][index].attributes['title'],
+                              snapshot.data[0][index].attributes['title'] ??
+                                  'N/A',
                             ),
+                            subtitle: Text('DIfficulty: ' +
+                                ((snapshot.data[0][index]
+                                        .attributes['difficulty'] ??
+                                    'N/A')) +
+                                ' | Time: ' +
+                                ((snapshot
+                                        .data[0][index].attributes['totalTime']
+                                        .toString() ??
+                                    'N/A'))),
                             onTap: () {
                               Navigator.push(
                                 context,
