@@ -22,6 +22,7 @@ dependencies:
   json_api: ^3.2.3
   cloud_firestore: 0.12.9+5
   provider: ^4.0.3
+  recase: ^3.0.0
 
 dev_dependencies:
   flutter_test:
