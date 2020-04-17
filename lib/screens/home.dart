@@ -36,6 +36,11 @@ class HomePage extends StatelessWidget {
                             subtitle: Text('DIfficulty: ' +
                                 ((snapshot.data[0][index]
                                         .attributes['difficulty'] ??
+                                    'N/A')) +
+                                ' | Time: ' +
+                                ((snapshot
+                                        .data[0][index].attributes['totalTime']
+                                        .toString() ??
                                     'N/A'))),
                             onTap: () {
                               Navigator.push(
