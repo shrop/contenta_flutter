@@ -1,17 +1,23 @@
-import 'package:json_api/client.dart';
 import 'package:http/http.dart';
+import 'package:json_api/client.dart';
+import 'package:json_api/http.dart';
+import 'package:json_api/routing.dart';
 
 class RecipeService {
-  Future<Map> fetchRecipes() async {
+  Future<List> fetchRecipes() async {
     // Get recipes from the Contenta CMS API.
+    final routing = StandardRouting(
+        Uri.parse('https://dev-contentacms.pantheonsite.io/api/'));
     final httpClient = Client();
-    final jsonApiClient = JsonApiClient(httpClient);
-    final recipesUri =
-        Uri.parse('https://dev-contentacms.pantheonsite.io/api/recipes');
-    final response = await jsonApiClient.fetchCollection(recipesUri);
+    // Some helping logging.
+    final httpHandler = LoggingHttpHandler(DartHttp(httpClient),
+        onRequest: (r) => print('${r.method} ${r.uri}'),
+        onResponse: (r) => print('${r.statusCode}'));
+    final client = RoutingClient(JsonApiClient(httpHandler), routing);
+    final response = await client.fetchCollection('recipes');
+    final recipes = response.data.unwrap();
     httpClient.close();
 
-    var results = response.data.unwrap().asMap();
-    return results;
+    return recipes;
   }
 }
