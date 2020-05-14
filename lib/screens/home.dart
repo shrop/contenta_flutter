@@ -43,6 +43,7 @@ class HomePage extends StatelessWidget {
                                 snapshot.data[0][index].attributes['totalTime']
                                     .toString() +
                                 ' min'),
+                            isThreeLine: true,
                             onTap: () {
                               Navigator.push(
                                 context,
