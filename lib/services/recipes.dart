@@ -31,7 +31,6 @@ class RecipeService {
         parameters: Include(['category']));
     final results = response.document.data.unwrap();
 
-    //final categories = response.document.data.included.toList();
     httpClient.close();
 
     List recipes = [];
