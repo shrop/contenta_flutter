@@ -7,12 +7,14 @@ import 'package:json_api/routing.dart';
 class Recipe {
   String id;
   String title;
+  String difficulty;
+  int totalTime;
 
-  Recipe(this.id, this.title);
+  Recipe(this.id, this.title, this.difficulty, this.totalTime);
 
   @override
   String toString() {
-    return '{ ${this.id}, ${this.title} }';
+    return '{ ${this.id}, ${this.title}, ${this.difficulty}, ${this.totalTime} }';
   }
 }
 
@@ -35,7 +37,14 @@ class RecipeService {
 
     List recipes = [];
     for (var i = 0; i < results.length; i++) {
-      recipes.add(Recipe(results[i].id, results[i].attributes['title']));
+      // @TODO Get category name from JSON API includes.
+
+      // Add Recipe data to a Recipe object in a list.
+      recipes.add(Recipe(
+          results[i].id,
+          results[i].attributes['title'],
+          results[i].attributes['difficulty'],
+          results[i].attributes['totalTime']));
     }
 
     return recipes;
