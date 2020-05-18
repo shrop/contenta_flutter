@@ -4,20 +4,22 @@ import 'package:json_api/http.dart';
 import 'package:json_api/query.dart';
 import 'package:json_api/routing.dart';
 
+/// Recipe data model.
 class Recipe {
-  String id;
+  final String id;
   String title;
   String difficulty;
-  int totalTime;
+  final int totalTime;
+  String category;
 
-  Recipe(this.id, this.title, this.difficulty, this.totalTime);
-
-  @override
-  String toString() {
-    return '{ ${this.id}, ${this.title}, ${this.difficulty}, ${this.totalTime} }';
+  Recipe(this.id, this.title, this.difficulty, this.totalTime, this.category) {
+    title ??= 'No title available.';
+    difficulty ??= 'N/A';
+    category ??= 'N/A';
   }
 }
 
+/// Get recipes from the Contenta CMS API and return with a custom data model.
 class RecipeService {
   Future<List> fetchRecipes() async {
     // Get recipes from the Contenta CMS API.
@@ -31,20 +33,33 @@ class RecipeService {
     final client = RoutingClient(JsonApiClient(httpHandler), routing);
     final response = await client.fetchCollection('recipes',
         parameters: Include(['category']));
+
+    // Gather list of recipe results.
     final results = response.document.data.unwrap();
+    // Gather list of related content (JSON API included).
+    final includes = response.document.data.included;
 
     httpClient.close();
 
     List recipes = [];
-    for (var i = 0; i < results.length; i++) {
-      // @TODO Get category name from JSON API includes.
+    String category;
 
-      // Add Recipe data to a Recipe object in a list.
+    for (var i = 0; i < results.length; i++) {
+      // Get category name from JSON API includes.
+      for (var x = 0; x < includes.length; x++) {
+        if (results[i].toOne['category'].id == includes[x].id) {
+          category = null;
+          category = includes[x].attributes['name'];
+        }
+      }
+
+      // Setup the recipe list of objects.
       recipes.add(Recipe(
           results[i].id,
           results[i].attributes['title'],
           results[i].attributes['difficulty'],
-          results[i].attributes['totalTime']));
+          results[i].attributes['totalTime'],
+          category));
     }
 
     return recipes;
