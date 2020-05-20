@@ -30,18 +30,12 @@ class HomePage extends StatelessWidget {
                         return Column(children: <Widget>[
                           ListTile(
                             leading: Icon(Icons.image),
-                            title: Text(
-                              snapshot.data[0][index].attributes['title'] ??
-                                  'Title not available.',
-                            ),
+                            title: Text(snapshot.data[0][index].title),
                             subtitle: Text('DIfficulty: ' +
-                                ((ReCase(snapshot.data[0][index]
-                                            .attributes['difficulty'] ??
-                                        'None'))
+                                (ReCase(snapshot.data[0][index].difficulty)
                                     .titleCase) +
                                 ' | Time: ' +
-                                snapshot.data[0][index].attributes['totalTime']
-                                    .toString() +
+                                snapshot.data[0][index].totalTime.toString() +
                                 ' min'),
                             isThreeLine: true,
                             onTap: () {
