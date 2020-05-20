@@ -1,23 +1,9 @@
+import '../models/recipe.dart';
 import 'package:http/http.dart';
 import 'package:json_api/client.dart';
 import 'package:json_api/http.dart';
 import 'package:json_api/query.dart';
 import 'package:json_api/routing.dart';
-
-/// Recipe data model.
-class Recipe {
-  final String id;
-  String title;
-  String difficulty;
-  final int totalTime;
-  String category;
-
-  Recipe(this.id, this.title, this.difficulty, this.totalTime, this.category) {
-    title ??= 'No title available.';
-    difficulty ??= 'N/A';
-    category ??= 'N/A';
-  }
-}
 
 /// Get recipes from the Contenta CMS API and return with a custom data model.
 class RecipeService {
@@ -41,9 +27,11 @@ class RecipeService {
 
     httpClient.close();
 
+    // Add results to a custom list of objects.
     List recipes = [];
     String category;
 
+    // Process each result and include objects.
     for (var i = 0; i < results.length; i++) {
       // Get category name from JSON API includes.
       for (var x = 0; x < includes.length; x++) {
