@@ -30,7 +30,8 @@ class HomePage extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.image),
                             title: Text(snapshot.data[0][index].title),
-                            subtitle: Text('DIfficulty: ' +
+                            subtitle: Text(snapshot.data[0][index].category +
+                                '\nDIfficulty: ' +
                                 snapshot.data[0][index].difficulty +
                                 ' | Time: ' +
                                 snapshot.data[0][index].totalTimeMin),
