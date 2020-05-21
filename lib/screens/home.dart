@@ -1,7 +1,6 @@
 import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:contenta_flutter/services/recipes.dart';
-import 'package:recase/recase.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -31,12 +30,11 @@ class HomePage extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.image),
                             title: Text(snapshot.data[0][index].title),
-                            subtitle: Text('DIfficulty: ' +
-                                (ReCase(snapshot.data[0][index].difficulty)
-                                    .titleCase) +
+                            subtitle: Text(snapshot.data[0][index].category +
+                                '\nDIfficulty: ' +
+                                snapshot.data[0][index].difficulty +
                                 ' | Time: ' +
-                                snapshot.data[0][index].totalTime.toString() +
-                                ' min'),
+                                snapshot.data[0][index].totalTimeMin),
                             isThreeLine: true,
                             onTap: () {
                               Navigator.push(
