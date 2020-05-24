@@ -18,7 +18,7 @@ class RecipeService {
         onResponse: (r) => print('${r.statusCode}'));
     final client = RoutingClient(JsonApiClient(httpHandler), routing);
     final response = await client.fetchCollection('recipes',
-        parameters: Include(['category']));
+        parameters: Include(['category', 'image']));
 
     // Gather list of recipe results.
     final results = response.document.data.unwrap();
@@ -30,14 +30,20 @@ class RecipeService {
     // Add results to a custom list of objects.
     List recipes = [];
     String category;
+    String imageFileName;
 
     // Process each result and include objects.
     for (var i = 0; i < results.length; i++) {
-      // Get category name from JSON API includes.
       for (var x = 0; x < includes.length; x++) {
+        // Get the category name from JSON API includes.
         if (results[i].toOne['category'].id == includes[x].id) {
           category = null;
           category = includes[x].attributes['name'];
+        }
+        // Get the image URL from JSON API includes.
+        if (results[i].toOne['image'].id == includes[x].id) {
+          imageFileName = null;
+          imageFileName = includes[x].attributes['name'];
         }
       }
 
@@ -47,7 +53,8 @@ class RecipeService {
           results[i].attributes['title'],
           results[i].attributes['difficulty'],
           results[i].attributes['totalTime'],
-          category));
+          category,
+          imageFileName));
     }
 
     return recipes;
