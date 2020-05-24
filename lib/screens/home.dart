@@ -28,7 +28,16 @@ class HomePage extends StatelessWidget {
                       itemBuilder: (BuildContext ctxt, int index) {
                         return Column(children: <Widget>[
                           ListTile(
-                            leading: Icon(Icons.image),
+                            leading: snapshot.data[0][index].imageFileName !=
+                                    null
+                                ? Image.network(
+                                    'https://dev-contentacms.pantheonsite.io/sites/default/files/' +
+                                        snapshot.data[0][index].imageFileName,
+                                    width: 75.0,
+                                  )
+                                : Icon(Icons.photo_size_select_actual,
+                                    size: 75.0,
+                                    semanticLabel: 'Placeholder image.'),
                             title: Text(snapshot.data[0][index].title),
                             subtitle: Text(snapshot.data[0][index].category +
                                 '\nDIfficulty: ' +
