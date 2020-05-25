@@ -1,3 +1,4 @@
+import '../shared/globals.dart' as globals;
 import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:contenta_flutter/services/recipes.dart';
@@ -29,15 +30,12 @@ class HomePage extends StatelessWidget {
                       itemBuilder: (BuildContext ctxt, int index) {
                         return Column(children: <Widget>[
                           ListTile(
-                            leading: SizedBox(
+                            leading: Container(
                               width: 75.0,
-                              height: 100.0,
+                              height: 75.0,
                               child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://dev-contentacms.pantheonsite.io/sites/default/files/' +
-                                        snapshot.data[0][index].imageFileName,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
+                                imageUrl: globals.API_IMAGES_URL +
+                                    snapshot.data[0][index].imageFileName,
                                 errorWidget: (context, url, error) => Icon(
                                     Icons.photo_size_select_actual,
                                     size: 75.0),

@@ -1,3 +1,4 @@
+import '../shared/globals.dart' as globals;
 import '../models/recipe.dart';
 import 'package:http/http.dart';
 import 'package:json_api/client.dart';
@@ -9,8 +10,7 @@ import 'package:json_api/routing.dart';
 class RecipeService {
   Future<List> fetchRecipes() async {
     // Get recipes from the Contenta CMS API.
-    final routing = StandardRouting(
-        Uri.parse('https://dev-contentacms.pantheonsite.io/api/'));
+    final routing = StandardRouting(Uri.parse(globals.API_URL));
     final httpClient = Client();
     // Some helping logging.
     final httpHandler = LoggingHttpHandler(DartHttp(httpClient),
