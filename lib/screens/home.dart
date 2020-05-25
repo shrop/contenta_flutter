@@ -1,6 +1,7 @@
 import 'package:contenta_flutter/screens/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:contenta_flutter/services/recipes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -28,16 +29,20 @@ class HomePage extends StatelessWidget {
                       itemBuilder: (BuildContext ctxt, int index) {
                         return Column(children: <Widget>[
                           ListTile(
-                            leading: snapshot.data[0][index].imageFileName !=
-                                    null
-                                ? Image.network(
+                            leading: SizedBox(
+                              width: 75.0,
+                              height: 100.0,
+                              child: CachedNetworkImage(
+                                imageUrl:
                                     'https://dev-contentacms.pantheonsite.io/sites/default/files/' +
                                         snapshot.data[0][index].imageFileName,
-                                    width: 75.0,
-                                  )
-                                : Icon(Icons.photo_size_select_actual,
-                                    size: 75.0,
-                                    semanticLabel: 'Placeholder image.'),
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Icon(
+                                    Icons.photo_size_select_actual,
+                                    size: 75.0),
+                              ),
+                            ),
                             title: Text(snapshot.data[0][index].title),
                             subtitle: Text(snapshot.data[0][index].category +
                                 '\nDIfficulty: ' +
