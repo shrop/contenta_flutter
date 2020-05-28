@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/recipe.dart';
 
 class RecipePage extends StatelessWidget {
+  // Declare a field that holds the Recipe.
+  final Recipe recipe;
+
+  // In the constructor, require a Recipe.
+  RecipePage({Key key, @required this.recipe}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

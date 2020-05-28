@@ -52,7 +52,8 @@ class HomePage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RecipePage()),
+                                    builder: (context) => RecipePage(
+                                        recipe: snapshot.data[0][index])),
                               );
                             },
                           )
