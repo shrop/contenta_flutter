@@ -1,5 +1,7 @@
+import '../shared/globals.dart' as globals;
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class RecipePage extends StatelessWidget {
   // Declare a field that holds the Recipe.
@@ -27,8 +29,10 @@ class RecipePage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              child: Image.network(
-                'https://dev-contentacms.pantheonsite.io/sites/default/files/716259-pxhere.jpg',
+              child: CachedNetworkImage(
+                imageUrl: globals.API_IMAGES_URL + recipe.imageFileName,
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.photo_size_select_actual, size: 75.0),
               ),
             ),
             Container(
@@ -45,7 +49,7 @@ class RecipePage extends StatelessWidget {
               margin: EdgeInsets.all(30.0),
               alignment: Alignment.topCenter,
               child: Text(
-                "Blue cheese and walnut pizza",
+                recipe.title,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -56,7 +60,12 @@ class RecipePage extends StatelessWidget {
             Container(
               alignment: Alignment.topCenter,
               child: Text(
-                "Category: Snack\nDifficulty: Easy\nTime: 14 mins",
+                "Category: " +
+                    recipe.category +
+                    "\nDifficulty: " +
+                    recipe.difficulty +
+                    "\nTime: " +
+                    recipe.totalTimeMin,
               ),
             ),
             Container(
