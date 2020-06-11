@@ -53,6 +53,8 @@ class RecipeService {
           results[i].attributes['title'],
           results[i].attributes['difficulty'],
           results[i].attributes['totalTime'],
+          results[i].attributes['ingredients'],
+          results[i].attributes['instructions'],
           category,
           imageFileName));
     }

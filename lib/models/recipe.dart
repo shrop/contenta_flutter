@@ -6,11 +6,13 @@ class Recipe {
   String title;
   String difficulty;
   final int totalTime;
+  final List ingredients;
+  final String instructions;
   String category;
   String imageFileName;
 
-  Recipe(this.id, this.title, this.difficulty, this.totalTime, this.category,
-      this.imageFileName) {
+  Recipe(this.id, this.title, this.difficulty, this.totalTime, this.ingredients,
+      this.instructions, this.category, this.imageFileName) {
     // Handle null values.
     title = title ??= 'No title available.';
     category = category ??= 'N/A';
