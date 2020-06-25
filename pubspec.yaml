@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   json_api: ^4.0.0-rc.4
-  cloud_firestore: 0.12.9+5
+  cloud_firestore: ^0.13.7
   provider: ^4.0.3
   recase: ^3.0.0
   cached_network_image: ^2.2.0+1
