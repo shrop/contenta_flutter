@@ -4,12 +4,17 @@ import '../models/recipe.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RecipePage extends StatelessWidget {
-  // Declare a field that holds the Recipe.
+class RecipePage extends StatefulWidget {
   final Recipe recipe;
-
-  // In the constructor, require a Recipe.
   RecipePage({Key key, @required this.recipe}) : super(key: key);
+
+  @override
+  _RecipePageState createState() => _RecipePageState(recipe);
+}
+
+class _RecipePageState extends State<RecipePage> {
+   final Recipe recipe;
+   _RecipePageState(this.recipe);
 
   /// Save new recipes to Cloud Firestore.
   void saveNewRecipe(String id) async {

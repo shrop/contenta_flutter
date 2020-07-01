@@ -3,7 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:contenta_flutter/shared/bottom_nav.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => BottomNavProvider())
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,10 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.yellow,
       ),
-      home: ChangeNotifierProvider<BottomNavProvider>(
-        child: BottomNav(),
-        create: (BuildContext context) => BottomNavProvider(),
-      ),
+      home: BottomNav()
     );
   }
 }
