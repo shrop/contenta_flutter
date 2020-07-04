@@ -13,24 +13,24 @@ class RecipePage extends StatefulWidget {
 }
 
 class _RecipePageState extends State<RecipePage> {
-   final Recipe recipe;
-   _RecipePageState(this.recipe);
+  final Recipe recipe;
+  _RecipePageState(this.recipe);
 
-  /// Save new recipes to Cloud Firestore.
-  void saveNewRecipe(String id) async {
+  /// Gather all recipe data to display an individual recipe.
+  Future<List> _getRecipe(String id) async {
+    /// Check if the current recipe is in Cloud Firestore.
     final databaseReference = Firestore.instance;
     final QuerySnapshot result = await databaseReference
-      .collection('recipes')
-      .where('id', isEqualTo: id)
-      .limit(1)
-      .getDocuments();
+        .collection('recipes')
+        .where('id', isEqualTo: id)
+        .limit(1)
+        .getDocuments();
+
     final List<DocumentSnapshot> documents = result.documents;
 
     /// Save current recipe to Cloud Firestore if it doesn't exist.
     if (documents.length != 1) {
-      databaseReference.collection('recipes')
-      .document()
-      .setData({
+      await databaseReference.collection('recipes').document().setData({
         'id': recipe.id,
         'title': recipe.title,
         'category': recipe.category,
@@ -38,18 +38,36 @@ class _RecipePageState extends State<RecipePage> {
         'ingredients': recipe.ingredients,
         'instructions': recipe.instructions,
         'imageFileName': recipe.imageFileName,
-        'totalTime': recipe.totalTime
+        'totalTime': recipe.totalTime,
+        'favorite': false
       });
     }
+
+    /// Return the recipe record from Cloud Firestore.
+    final QuerySnapshot recipeData = await databaseReference
+        .collection('recipes')
+        .where('id', isEqualTo: id)
+        .limit(1)
+        .getDocuments();
+
+    final List<DocumentSnapshot> document = recipeData.documents;
+    return document;
+  }
+
+  /// Update favorite status.
+  void _updateFavStatus(String docId, bool favValue) async {
+    await Firestore.instance
+        .collection('recipes')
+        .document(docId)
+        .updateData({'favorite': favValue});
   }
 
   @override
   Widget build(BuildContext context) {
-    /// Save new recipes to Cloud Firestore.
-    saveNewRecipe(recipe.id);
-
+    final Set<bool> favorited = Set<bool>();
     final ingredients =
         recipe.ingredients.reduce((value, element) => value + ',' + element);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -64,45 +82,78 @@ class _RecipePageState extends State<RecipePage> {
         backgroundColor: Colors.grey[400],
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CachedNetworkImage(
-                imageUrl: globals.API_IMAGES_URL + recipe.imageFileName,
-                errorWidget: (context, url, error) =>
-                    Icon(Icons.photo_size_select_actual, size: 75.0),
-              ),
-              Row(
-                children: [
-                  Icon(Icons.favorite),
-                  Icon(Icons.share),
-                ],
-              ),
-              Text(
-                recipe.title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              Text(
-                "Category: " +
-                    recipe.category +
-                    "\nDifficulty: " +
-                    recipe.difficulty +
-                    "\nTime: " +
-                    recipe.totalTimeMin,
-              ),
-              Text(
-                'Ingredients: ' + ingredients,
-              ),
-              Text(
-                'Instructions: ' + recipe.instructions,
-              ),
-            ],
-          ),
-        ),
+        child: FutureBuilder(
+            future: _getRecipe(recipe.id),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                final bool isFavorite = snapshot.data[0].data['favorite'];
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: globals.API_IMAGES_URL + recipe.imageFileName,
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.photo_size_select_actual, size: 75.0),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : null),
+                            onPressed: () {
+                              setState(() {
+                                if (isFavorite) {
+                                  favorited.remove(
+                                      snapshot.data[0].data['favorite']);
+                                  _updateFavStatus(
+                                      snapshot.data[0].documentID, false);
+                                } else {
+                                  favorited
+                                      .add(snapshot.data[0].data['favorite']);
+                                  _updateFavStatus(
+                                      snapshot.data[0].documentID, true);
+                                }
+                              });
+                            },
+                          ),
+                          Icon(Icons.share),
+                        ],
+                      ),
+                      Text(
+                        recipe.title,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        "Category: " +
+                            recipe.category +
+                            "\nDifficulty: " +
+                            recipe.difficulty +
+                            "\nTime: " +
+                            recipe.totalTimeMin,
+                      ),
+                      Text(
+                        'Ingredients: ' + ingredients,
+                      ),
+                      Text(
+                        'Instructions: ' + recipe.instructions,
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                // Proivde a spinner while we wait on the Contenta CMS API.
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
       ),
     );
   }
