@@ -39,6 +39,7 @@ class _RecipePageState extends State<RecipePage> {
         'instructions': recipe.instructions,
         'imageFileName': recipe.imageFileName,
         'totalTime': recipe.totalTime,
+        'totalTimeMin': recipe.totalTimeMin,
         'favorite': false
       });
     }
