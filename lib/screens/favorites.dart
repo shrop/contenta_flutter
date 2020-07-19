@@ -1,36 +1,15 @@
 import '../shared/globals.dart' as globals;
-import 'package:contenta_flutter/screens/recipe.dart';
+import 'package:contenta_flutter/screens/recipe2.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/recipe.dart';
 
-/// Gather all recipe data to display an individual recipe.
-Future<List> fetchRecipeFavs() async {
-  /// Return the recipe record from Cloud Firestore.
-  final databaseReference = Firestore.instance;
-  final QuerySnapshot favorites = await databaseReference
+/// Return a Stream of favorited recipes.
+Stream _getFavs() {
+  return Firestore.instance
       .collection('recipes')
       .where('favorite', isEqualTo: true)
-      .getDocuments();
-
-  final List<DocumentSnapshot> favoriteRecipes = favorites.documents;
-  List recipes = [];
-
-  favoriteRecipes.forEach((e) {
-    recipes.add(Recipe(
-      e.data['id'],
-      e.data['title'],
-      e.data['difficulty'],
-      e.data['totalTime'],
-      e.data['ingredients'],
-      e.data['instructions'],
-      e.data['category'],
-      e.data['imageFileName'],
-    ));
-  });
-
-  return recipes;
+      .snapshots();
 }
 
 class FavoritesPage extends StatelessWidget {
@@ -47,15 +26,14 @@ class FavoritesPage extends StatelessWidget {
         backgroundColor: Colors.grey[400],
       ),
       body: Container(
-        child: FutureBuilder(
-            future: Future.wait([
-              fetchRecipeFavs(),
-            ]),
-            builder: (BuildContext context, AsyncSnapshot recipes) {
-              if (recipes.hasData) {
+        child: StreamBuilder<QuerySnapshot>(
+            stream: _getFavs(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
                 return ListView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: recipes.data[0].length,
+                    itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext ctxt, int index) {
                       return Column(children: <Widget>[
                         ListTile(
@@ -64,26 +42,31 @@ class FavoritesPage extends StatelessWidget {
                             height: 75.0,
                             child: CachedNetworkImage(
                               imageUrl: globals.API_IMAGES_URL +
-                                  recipes.data[0][index].imageFileName,
+                                  snapshot.data.documents[index]
+                                      .data['imageFileName'],
                               errorWidget: (context, url, error) => Icon(
                                   Icons.photo_size_select_actual,
                                   size: 75.0),
                             ),
                           ),
-                          title: Text(recipes.data[0][index].title),
-                          subtitle: Text(recipes.data[0][index].category +
-                              '\nDIfficulty: ' +
-                              recipes.data[0][index].difficulty +
-                              ' | Time: ' +
-                              recipes.data[0][index].totalTimeMin),
+                          title: Text(
+                              snapshot.data.documents[index].data['title']),
+                          subtitle: Text(
+                              snapshot.data.documents[index].data['category'] +
+                                  '\nDIfficulty: ' +
+                                  snapshot.data.documents[index]
+                                      .data['difficulty'] +
+                                  ' | Time: ' +
+                                  snapshot.data.documents[index]
+                                      .data['totalTimeMin']),
                           isThreeLine: true,
                           onTap: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RecipePage(
-                                      recipe: recipes.data[0][index])),
-                            );
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecipePage2(
+                                      favorite: snapshot.data.documents[index]),
+                                ));
                           },
                         )
                       ]);
