@@ -6,7 +6,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (BuildContext context) => BottomNavProvider())
+        ChangeNotifierProvider(
+            create: (BuildContext context) => BottomNavProvider())
       ],
       child: MyApp(),
     ),
@@ -17,11 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Umami Recipes',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: BottomNav()
-    );
+        title: 'Decoupled Days Recipes',
+        theme: ThemeData(
+          primarySwatch: Colors.yellow,
+        ),
+        home: BottomNav());
   }
 }

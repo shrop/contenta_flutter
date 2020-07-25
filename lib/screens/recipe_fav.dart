@@ -3,17 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RecipePage2 extends StatefulWidget {
+class RecipeFav extends StatelessWidget {
   final DocumentSnapshot favorite;
-  RecipePage2({Key key, @required this.favorite}) : super(key: key);
-
-  @override
-  _RecipePageState2 createState() => _RecipePageState2(favorite);
-}
-
-class _RecipePageState2 extends State<RecipePage2> {
-  final DocumentSnapshot favorite;
-  _RecipePageState2(this.favorite);
+  RecipeFav({Key key, @required this.favorite}) : super(key: key);
 
   /// Update favorite status.
   void _updateFavStatus(String docId, bool favValue) async {
@@ -25,8 +17,6 @@ class _RecipePageState2 extends State<RecipePage2> {
 
   @override
   Widget build(BuildContext context) {
-    final Set<bool> favorited = Set<bool>();
-    final bool isFavorite = favorite.data['favorite'];
     final ingredients = favorite.data['ingredients']
         .reduce((value, element) => value + ',' + element);
 
@@ -56,9 +46,7 @@ class _RecipePageState2 extends State<RecipePage2> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : null),
+                      icon: Icon(Icons.favorite, color: Colors.red),
                       onPressed: () {
                         _updateFavStatus(favorite.documentID, false);
                         Navigator.pop(context);

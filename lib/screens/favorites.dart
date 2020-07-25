@@ -1,5 +1,5 @@
 import '../shared/globals.dart' as globals;
-import 'package:contenta_flutter/screens/recipe2.dart';
+import 'package:contenta_flutter/screens/recipe_fav.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,7 +64,7 @@ class FavoritesPage extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RecipePage2(
+                                  builder: (context) => RecipeFav(
                                       favorite: snapshot.data.documents[index]),
                                 ));
                           },
